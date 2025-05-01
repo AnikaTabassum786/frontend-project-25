@@ -10,7 +10,6 @@ const LatestNews = () => {
                 <p className='bg-base-200 py-2 px-3 font-bold'>Match Highlights: Germany vs Spain — as it happened ! Match Highlights: Germany vs Spain as...</p>
                 <p className='bg-base-200 py-2 px-3 font-bold'>Match Highlights: Germany vs Spain — as it happened ! Match Highlights: Germany vs Spain as...</p>
             </Marquee>
-
         </div>
     );
 };
