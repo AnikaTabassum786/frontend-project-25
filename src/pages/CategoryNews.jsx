@@ -34,12 +34,12 @@ const CategoryNews = () => {
         <div>
             Category News - {categoryNews.length}
 
-            <div>
+            <div className='mx-auto'>
                 {
-                    categoryNews.map((category)=>{
+                    categoryNews.map((news)=>{
                         return(
-                            <NewsCard>
-{category.title}
+                            <NewsCard news={news}>
+                             
                             </NewsCard>
                         )
                     })

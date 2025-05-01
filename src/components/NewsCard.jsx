@@ -1,9 +1,13 @@
 import React from 'react';
 
-const NewsCard = () => {
+const NewsCard = ({news}) => {
+    const {id,title,author,thumbnail_url} = news 
+
     return (
         <div>
-           NewsCard 
+          <p>{title}</p>
+          <img src={author.img} alt="" />
+          <img src={thumbnail_url} alt="" />
         </div>
     );
 };
