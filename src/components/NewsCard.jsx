@@ -1,7 +1,7 @@
 import React from 'react';
 
 const NewsCard = ({news}) => {
-    const {id,title,author,thumbnail_url} = news 
+    const {title,author,thumbnail_url} = news 
 
     return (
         <div>
