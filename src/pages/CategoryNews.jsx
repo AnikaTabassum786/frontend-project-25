@@ -32,7 +32,7 @@ const CategoryNews = () => {
     
     return (
         <div>
-            Category News - {categoryNews.length}
+            {/* Category News - {categoryNews.length} */}
 
             <div className='mx-auto'>
                 {

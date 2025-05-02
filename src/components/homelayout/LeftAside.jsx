@@ -4,7 +4,7 @@ import Categories from '../Categories';
 const LeftAside = () => {
     return (
         <div>
-            Left Aside
+           
             {/* <Categories></Categories> */}
             
            <Suspense fallback={<span className="loading loading-spinner loading-xl"></span>}>

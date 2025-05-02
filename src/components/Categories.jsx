@@ -20,9 +20,9 @@ const Categories = () => {
 
     return (
         <div>
-            <p className='font-bold text-2xl'>All categories {categories.length}</p>
+            <p className='font-bold text-2xl'>All categories ({categories.length})</p>
 
-            <div className='grid grid-cols-1 gap-2 '>
+            <div className='grid grid-cols-1 gap-2  '>
                 {categories.map((category) => {
                     return (
                         <div key={category.id}>

@@ -19,7 +19,8 @@ const Register = () => {
          .then(result=>{
             const user = result.user;
             // console.log(user)
-            setUser(user)
+            //  setUser(user)
+            alert('Register Done')
          })
          .catch((error) => {
             const errorCode = error.code;
@@ -53,7 +54,7 @@ const Register = () => {
 
                             </form>
                             <div className='text-center'>
-                                You have an account? <Link to='/auth/register'><span className='text-red-500 hover:underline cursor-pointer'>Login</span></Link>
+                                You have an account? <Link to='/auth/login'><span className='text-red-500 hover:underline cursor-pointer'>Login</span></Link>
                             </div>
                         </div>
                     </div>
