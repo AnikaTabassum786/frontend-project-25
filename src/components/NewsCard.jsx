@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaEye, FaStar, FaShareAlt, FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router";
+import NewsDetails from '../pages/NewsDetails';
 
 const NewsCard = ({news}) => {
   const { id, title, author, thumbnail_url, details, rating, total_view } =
