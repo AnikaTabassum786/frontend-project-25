@@ -4,7 +4,7 @@ import { AuthContext } from '../provider/AuthProvider';
 
 const Register = () => {
 
-    const {createUser,setUser} = use(AuthContext)
+    const {createUser,setUser,updateUser} = use(AuthContext)
     const navigate = useNavigate()
 
     const handleRegister=(e)=>{
@@ -14,13 +14,50 @@ const Register = () => {
          const email = e.target.email.value;
          const photo =e.target.photo.value
          const password = e.target.password.value
-         console.log(name,email,photo,password)
+         const confirmPassword = e.target.confirmPassword.value
+         console.log(name,email,photo,password,confirmPassword)
+
+         const isDigit = /\d/;
+         const isUpperCase = /[A-Z]/;
+         const isLowerCase = /[a-z]/
+
+         if(password !== confirmPassword){
+            alert('Password and Confirm Password must be same')
+            return
+         }
+
+         else if( password.length < 6){
+            alert('Password must be 6 character')
+            return
+         }
+        
+         else if (isDigit.test(password) === false) {
+            alert('Password Must Have digit')
+           return
+         }
+
+         else if (isUpperCase.test(password) === false) {
+            alert('Password Must Have Capital Letter')
+           return;
+         }
+
+         else if (isLowerCase.test(password) === false) {
+            alert('Password Must Have Small Letter')
+           return
+         }
 
          createUser(email,password)
          .then(result=>{
             const user = result.user;
-            // console.log(user)
-            //  setUser(user)
+            updateUser({displayName: name, photoURL: photo})
+            .then(()=>{
+              setUser({...user,displayName: name, photoURL: photo})
+            })
+            .catch((error)=>{
+                console.log(error)
+                setUser(user)
+            })
+            
             alert('Register Done')
             navigate('/auth/login')
          })
@@ -49,7 +86,10 @@ const Register = () => {
                             <input type="email" name='email' className="input" placeholder="Email" required />
 
                             <label className="label">Password</label>
-                            <input type="password" name='password' className="input" placeholder="Password" required />
+                            <input type="text" name='password' className="input" placeholder="Password" required />
+
+                            <label className="label">Confirm Password</label>
+                            <input type="text" name='confirmPassword' className="input" placeholder="Password" required />
 
                             <div><a className="link link-hover">Forgot password?</a></div>
                             <button className="btn btn-neutral mt-4">Register</button>
