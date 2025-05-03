@@ -1,16 +1,17 @@
 import React, { use } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import userImg from '../assets/user.png'
 import { AuthContext } from '../provider/AuthProvider';
 
 const Navbar = () => {
     const {user,logOut} = use(AuthContext)
-
+    const navigate = useNavigate()
     const handleLogOut=()=>{
         console.log('logout done')
         logOut()
         .then(() => {
             alert('Logout Successfully')
+            navigate('/auth/login')
           }).catch((error) => {
             console.log(error.message)
           });
