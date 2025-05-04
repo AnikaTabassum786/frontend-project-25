@@ -1,71 +1,81 @@
 import React, { use } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../provider/AuthProvider';
+import { sendEmailVerification } from 'firebase/auth';
+import { auth } from '../firebase/firebase.config';
 
 const Register = () => {
 
-    const {createUser,setUser,updateUser} = use(AuthContext)
+    const { createUser, setUser, updateUser } = use(AuthContext)
     const navigate = useNavigate()
 
-    const handleRegister=(e)=>{
-         e.preventDefault();
+    const handleRegister = (e) => {
+        e.preventDefault();
 
-         const name = e.target.name.value;
-         const email = e.target.email.value;
-         const photo =e.target.photo.value
-         const password = e.target.password.value
-         const confirmPassword = e.target.confirmPassword.value
-         console.log(name,email,photo,password,confirmPassword)
+        const name = e.target.name.value;
+        const email = e.target.email.value;
+        const photo = e.target.photo.value
+        const password = e.target.password.value
+        const confirmPassword = e.target.confirmPassword.value
+        console.log(name, email, photo, password, confirmPassword)
 
-         const isDigit = /\d/;
-         const isUpperCase = /[A-Z]/;
-         const isLowerCase = /[a-z]/
+        //  const isDigit = /\d/;
+        //  const isUpperCase = /[A-Z]/;
+        //  const isLowerCase = /[a-z]/
 
-         if(password !== confirmPassword){
-            alert('Password and Confirm Password must be same')
-            return
-         }
+        //  if(password !== confirmPassword){
+        //     alert('Password and Confirm Password must be same')
+        //     return
+        //  }
 
-         else if( password.length < 6){
-            alert('Password must be 6 character')
-            return
-         }
-        
-         else if (isDigit.test(password) === false) {
-            alert('Password Must Have digit')
-           return
-         }
+        //  else if( password.length < 6){
+        //     alert('Password must be 6 character')
+        //     return
+        //  }
 
-         else if (isUpperCase.test(password) === false) {
-            alert('Password Must Have Capital Letter')
-           return;
-         }
+        //  else if (isDigit.test(password) === false) {
+        //     alert('Password Must Have digit')
+        //    return
+        //  }
 
-         else if (isLowerCase.test(password) === false) {
-            alert('Password Must Have Small Letter')
-           return
-         }
+        //  else if (isUpperCase.test(password) === false) {
+        //     alert('Password Must Have Capital Letter')
+        //    return;
+        //  }
 
-         createUser(email,password)
-         .then(result=>{
-            const user = result.user;
-            updateUser({displayName: name, photoURL: photo})
-            .then(()=>{
-              setUser({...user,displayName: name, photoURL: photo})
+        //  else if (isLowerCase.test(password) === false) {
+        //     alert('Password Must Have Small Letter')
+        //    return
+        //  }
+
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+
+                // Verify Email
+                // sendEmailVerification(auth.currentUser)
+                //     .then(() => {
+                //         //   setSuccess(true)
+                //         alert('We sent a verification email. Please check your email')
+                //     })
+
+                updateUser({ displayName: name, photoURL: photo })
+                    .then(() => {
+                        setUser({ ...user, displayName: name, photoURL: photo })
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setUser(user)
+                    })
+
+                alert('Register Done')
+                navigate('/auth/login')
             })
-            .catch((error)=>{
-                console.log(error)
-                setUser(user)
-            })
-            
-            alert('Register Done')
-            navigate('/auth/login')
-         })
-         .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Error Code',errorCode,'Error Message',errorMessage)
-          });
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log('Error Code', errorCode, 'Error Message', errorMessage)
+            });
     }
     return (
         <div>
@@ -76,23 +86,23 @@ const Register = () => {
                         <div className="card-body">
                             <form onSubmit={handleRegister}>
 
-                            <label className="label">Name</label>
-                            <input type="text" name='name' className="input" placeholder="Name" required />
+                                <label className="label">Name</label>
+                                <input type="text" name='name' className="input" placeholder="Name" required />
 
-                            <label className="label">Photo URL</label>
-                            <input name='photo' type="text" className="input" placeholder="Photo URL" required />
+                                <label className="label">Photo URL</label>
+                                <input name='photo' type="text" className="input" placeholder="Photo URL" required />
 
-                            <label className="label">Email</label>
-                            <input type="email" name='email' className="input" placeholder="Email" required />
+                                <label className="label">Email</label>
+                                <input type="email" name='email' className="input" placeholder="Email" required />
 
-                            <label className="label">Password</label>
-                            <input type="text" name='password' className="input" placeholder="Password" required />
+                                <label className="label">Password</label>
+                                <input type="text" name='password' className="input" placeholder="Password" required />
 
-                            <label className="label">Confirm Password</label>
-                            <input type="text" name='confirmPassword' className="input" placeholder="Password" required />
+                                <label className="label">Confirm Password</label>
+                                <input type="text" name='confirmPassword' className="input" placeholder="Password" required />
 
-                            <div><a className="link link-hover">Forgot password?</a></div>
-                            <button className="btn btn-neutral mt-4">Register</button>
+                                <div><a className="link link-hover">Forgot password?</a></div>
+                                <button className="btn btn-neutral mt-4">Register</button>
 
                             </form>
                             <div className='text-center'>

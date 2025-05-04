@@ -1,20 +1,29 @@
-import React, { use, useState } from 'react';
+import React, { use, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../provider/AuthProvider';
+import { auth } from '../firebase/firebase.config';
+import { sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
   
   const {signInUser} = use(AuthContext)   
   const navigate = useNavigate()
   const location = useLocation()
+
   const [error,setError] = useState('')
+  const [success,setSuccess] = useState(false)
+  const emailRef = useRef()
 
   const handleLogin=(e)=>{
     
       e.preventDefault()
+
       const email = e.target.email.value;
       const password = e.target.password.value 
       console.log(email,password)
+
+      setError(' ')
+      setSuccess(false)
       
 
       signInUser(email,password)
@@ -22,8 +31,27 @@ const Login = () => {
         // Signed in 
         const user = result.user;
         console.log(user)
-        alert('Login Done')
-        navigate(location?.state || '/category/0')
+
+        signInWithEmailAndPassword(auth,email,password)
+          .then(result=>{
+            if(result.user.emailVerified === true)
+            {
+                 setSuccess(true)
+                // console.log(result)
+                 alert('Login Done')
+                //  navigate(location?.state || '/category/0')
+            }
+            // else{
+            //     alert('Please Verify You Email')
+            //     setSuccess(false)
+            //     // console.log(result)
+            //     // alert('Login Done')
+            // }
+            
+          })
+        
+          navigate(location?.state || '/category/0')
+        
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -32,6 +60,32 @@ const Login = () => {
         setError(errorMessage)
       });
   }
+
+  const handleForgotPassword=()=>{
+        const email = emailRef.current.value;
+        console.log(email) 
+
+        // setError('')
+
+        // if (!email) {
+        //   alert('Please enter your email address first');
+        //   return;
+        // }
+
+        sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert("A Password reset Email is Send")
+        })
+        .catch((error) => {
+           const errorCode = error.code;
+          const errorMessage = error.message;
+           console.log(errorCode,errorMessage)
+          setError(errorMessage)
+        });
+        
+  }
+
+
     return (
         <div>
             <div className=" ">
@@ -49,14 +103,14 @@ const Login = () => {
         <form onSubmit={handleLogin}>
 
           <label className="label">Email</label>
-          <input type="email" name='email' className="input" placeholder="Email" required />
+          <input type="email" name='email' ref={emailRef} className="input" placeholder="Email" required />
 
           <label className="label">Password</label>
           <input type="password" name='password' className="input" placeholder="Password" required />
           <div>
            {error && <p className='text-red-500'>{error}</p>}
           </div>
-          <div><a className="link link-hover">Forgot password?</a></div>
+          <div onClick={handleForgotPassword}><a className="link link-hover">Forgot password?</a></div>
          
           <button className="btn btn-neutral mt-4">Login</button>
           
